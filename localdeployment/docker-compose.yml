@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  user:
+    image: adoptopenjdk:11.0.11_9-jdk-hotspot-focal@sha256:7ca300be7a4e80848b434994f10d32fedb80a15a845fe87112e64189fbed2abb
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    volumes:
+      - ./../:/app:rw
+    command: [ "sh", "-c", "cd /app && ./mvnw -Dmaven.repo.local=/app/.mvn/.m2 -Dquarkus.http.host=0.0.0.0 -pl user clean quarkus:dev" ]
+    networks:
+      - devmode
+networks:
+  devmode:
