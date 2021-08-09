@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<project
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>quarkus-devmode</artifactId>
+    <groupId>de.consol.dus</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>quarkus-devmode.user</artifactId>
+
+  <properties>
+    <!-- docker configuration -->
+    <quarkus.container-image.group>quarkus-devmode</quarkus.container-image.group>
+    <quarkus.container-image.name>user-service</quarkus.container-image.name>
+
+    <!-- remote-dev configuration -->
+    <quarkus.live-reload.url>http://localhost:8080</quarkus.live-reload.url>
+    <quarkus.live-reload.password>changeit</quarkus.live-reload.password>
+  </properties>
+
+</project>
