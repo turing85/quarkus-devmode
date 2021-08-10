@@ -7,7 +7,7 @@ services:
       - "5005:5005"
     volumes:
       - ./../:/app:rw
-    command: [ "sh", "-c", "cd /app && ./mvnw -Dmaven.repo.local=/app/.mvn/.m2 -Dquarkus.http.host=0.0.0.0 -pl user clean quarkus:dev" ]
+    command: [ "sh", "-c", "cd /app && ./mvnw -Dmaven.repo.local=/app/.mvn/.m2/repository -Dquarkus.http.host=0.0.0.0 -pl user clean quarkus:dev" ]
     networks:
       - devmode
 networks:
