@@ -16,7 +16,7 @@ public class GreetingResource {
     public String hello(Optional<GreetingRequest> greeting) {
         return String.format(
             "%s %s!",
-            greeting.map(GreetingRequest::getSalutation).orElse("Hello there"),
+            greeting.map(GreetingRequest::getSalutation).orElse("Hi"),
             greeting.map(GreetingRequest::getName).orElse("IBM"));
     }
 }
