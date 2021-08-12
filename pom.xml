@@ -190,10 +190,12 @@
         <version>${antrun-plugin.version}</version>
         <executions>
           <execution>
-            <id>generate-emtpydir</id>
+            <id>generate-empty-app-dir-with-777-permission</id>
             <configuration>
               <target>
-                <mkdir dir="${project.build.directory}/emptydir"/>
+                <mkdir dir="${project.build.directory}/copydir"/>
+                <mkdir dir="${project.build.directory}/copydir/app"/>
+                <chmod dir="${project.build.directory}/copydir/app" perm="777"/>
               </target>
             </configuration>
             <goals>
