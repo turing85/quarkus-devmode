@@ -4,8 +4,7 @@ metadata:
   name: git-init
   namespace: quarkus-devmode
   labels:
-    app: tekton-operator
-    name: tekton-operator
+    app: quarkus-devmode
 spec:
   lookupPolicy:
     local: false
@@ -25,8 +24,7 @@ metadata:
   name: maven
   namespace: quarkus-devmode
   labels:
-    app: tekton-operator
-    name: tekton-operator
+    app: quarkus-devmode
 spec:
   lookupPolicy:
     local: false
@@ -46,8 +44,7 @@ metadata:
   name: kaniko
   namespace: quarkus-devmode
   labels:
-    app: tekton-operator
-    name: tekton-operator
+    app: quarkus-devmode
 spec:
   lookupPolicy:
     local: false
