@@ -32,9 +32,13 @@ spec:
             persistentVolumeClaim:
               claimName: maven-settings
           - name: shared-workspace
-            persistentVolumeClaim:
-              claimName: shared-workspace
-            subPath: $(uid)
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 100Mi
 ---
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
