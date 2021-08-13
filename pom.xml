@@ -43,10 +43,10 @@
       ${quarkus.docker.dockerfile-root}/Dockerfile.jvm
     </quarkus.docker.dockerfile-jvm-path>
     <quarkus.docker.dockerfile-jvm-dev-path>
-      ${quarkus.docker.dockerfile-root}/Dockerfile.jvm.dev
+      ${quarkus.docker.dockerfile-root}/Dockerfile.jvm-dev
     </quarkus.docker.dockerfile-jvm-dev-path>
     <quarkus.docker.dockerfile-native-path>
-      ${quarkus.docker.dockerfile-root}/Dockerfile.native
+      ${quarkus.docker.dockerfile-root}/Dockerfile.native-distroless
     </quarkus.docker.dockerfile-native-path>
   </properties>
   <packaging>pom</packaging>

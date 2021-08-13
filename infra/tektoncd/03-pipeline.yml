@@ -57,16 +57,16 @@ spec:
         - name: BUILDER_IMAGE
           value: image-registry.openshift-image-registry.svc:5000/quarkus-devmode/kaniko:latest
         - name: IMAGE
-          value: image-registry.openshift-image-registry.svc:5000/quarkus-devmode/user-service:$(params.commitId)
+          value: image-registry.openshift-image-registry.svc:5000/quarkus-devmode/user-service:latest
         - name: CONTEXT
           value: user/
         - name: EXTRA_ARGS
           value:
             - --skip-tls-verify
             - --destination
-            - image-registry.openshift-image-registry.svc:5000/quarkus-devmode/user-service:latest
+            - image-registry.openshift-image-registry.svc:5000/quarkus-devmode/user-service:$(params.commitId)
         - name: DOCKERFILE
-          value: user/src/main/docker/Dockerfile.jvm.dev
+          value: user/src/main/docker/Dockerfile.jvm-dev
       workspaces:
         - name: source
           workspace: shared-workspace
