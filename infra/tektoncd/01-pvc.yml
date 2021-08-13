@@ -19,7 +19,7 @@ metadata:
     app: quarkus-devmode
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
