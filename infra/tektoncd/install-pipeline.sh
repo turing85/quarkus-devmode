@@ -7,8 +7,8 @@ copy_image() {
 
 # install pipeline tasks
 oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
+oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/maven/0.2/maven.yaml
 oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/kaniko/0.4/kaniko.yaml
-oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/skopeo-copy/0.1/skopeo-copy.yaml
 
 # create image streams for pipeline task runner images
 oc apply -f 00-image-streams.yml
