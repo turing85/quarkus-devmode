@@ -35,14 +35,6 @@ spec:
             persistentVolumeClaim:
               claimName: shared-workspace
             subPath: $(uid)
-#          - name: shared-workspace
-#            volumeCla imTemplate:
-#              spec:
-#                accessModes:
-#                  - ReadWriteOnce
-#                resources:
-#                  requests:
-#                    storage: 500Mi
 ---
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
