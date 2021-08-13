@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-copy_image() {
-  skopeo copy docker://"$1"@"$2" docker://"$3":"$4"
-}
-
 # install pipeline tasks
 oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
 oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/maven/0.2/maven.yaml
