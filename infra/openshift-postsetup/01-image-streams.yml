@@ -1,0 +1,7 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: user-service
+  namespace: quarkus-devmode
+  labels:
+    app: quarkus-devmode

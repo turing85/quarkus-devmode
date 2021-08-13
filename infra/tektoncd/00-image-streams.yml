@@ -1,0 +1,62 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: git-init
+  namespace: quarkus-devmode
+  labels:
+    app: tekton-operator
+    name: tekton-operator
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Local
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: maven
+  namespace: quarkus-devmode
+  labels:
+    app: tekton-operator
+    name: tekton-operator
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: gcr.io/cloud-builders/mvn
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Local
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: kaniko
+  namespace: quarkus-devmode
+  labels:
+    app: tekton-operator
+    name: tekton-operator
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: gcr.io/kaniko-project/executor
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Local

@@ -1,0 +1,72 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: maven-build-pipeline
+  labels:
+    app: quarkus-devmode
+spec:
+  params:
+    - name: gitUrl
+    - name: gitRevision
+    - name: commitId
+  workspaces:
+    - name: shared-workspace
+    - name: maven-settings
+  tasks:
+    - name: checkout
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: gitInitImage
+          value: image-registry.openshift-image-registry.svc:5000/quarkus-devmode/git-init:latest
+        - name: url
+          value: $(params.gitUrl)
+        - name: revision
+          value: $(params.gitRevision)
+    - name: compile
+      taskRef:
+        name: maven
+      runAfter:
+        - checkout
+      params:
+        - name: MAVEN_IMAGE
+          value: image-registry.openshift-image-registry.svc:5000/quarkus-devmode/maven:latest
+        - name: GOALS
+          value:
+            - -Dmaven.repo.local=$(workspaces.maven-settings.path)/.m2/repository
+            - -pl
+            - user
+            - -DskipTests
+            - -Ddev
+            - clean
+            - package
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+        - name: maven-settings
+          workspace: maven-settings
+    - name: build-and-push-image
+      taskRef:
+        name: kaniko
+      runAfter:
+        - compile
+      params:
+        - name: BUILDER_IMAGE
+          value: image-registry.openshift-image-registry.svc:5000/quarkus-devmode/kaniko:latest
+        - name: IMAGE
+          value: image-registry.openshift-image-registry.svc:5000/quarkus-devmode/user-service:$(params.commitId)
+        - name: CONTEXT
+          value: user/
+        - name: EXTRA_ARGS
+          value:
+            - --skip-tls-verify
+            - --destination
+            - image-registry.openshift-image-registry.svc:5000/quarkus-devmode/user-service:latest
+        - name: DOCKERFILE
+          value: user/src/main/docker/Dockerfile.jvm.dev
+      workspaces:
+        - name: source
+          workspace: shared-workspace

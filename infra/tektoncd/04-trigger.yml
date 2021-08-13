@@ -1,0 +1,102 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: quarkus-devmode-tt
+  labels:
+    app: quarkus-devmode
+    eventlistener:  quarkus-devmode-el
+spec:
+  params:
+    - name: gitUrl
+    - name: gitRevision
+    - name: commitId
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: quarkus-devmode-run-
+        namespace: quarkus-devmode
+      spec:
+        serviceAccountName: pipeline
+        pipelineRef:
+          name: maven-build-pipeline
+        params:
+          - name: gitUrl
+            value: $(tt.params.gitUrl)
+          - name: gitRevision
+            value: $(tt.params.gitRevision)
+          - name: commitId
+            value: $(tt.params.commitId)
+        workspaces:
+          - name: maven-settings
+            persistentVolumeClaim:
+              claimName: maven-settings
+          - name: shared-workspace
+            persistentVolumeClaim:
+              claimName: shared-workspace
+            subPath: $(uid)
+#          - name: shared-workspace
+#            volumeCla imTemplate:
+#              spec:
+#                accessModes:
+#                  - ReadWriteOnce
+#                resources:
+#                  requests:
+#                    storage: 500Mi
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: quarkus-devmode-tb
+  labels:
+    app: quarkus-devmode
+    eventlistener:  quarkus-devmode-el
+spec:
+  params:
+    - name: gitUrl
+      value: $(body.repository.url)
+    - name: gitRevision
+      value: $(body.after)
+    - name: commitId
+      value: $(extensions.commitId)
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: quarkus-devmode-el
+  labels:
+    app: quarkus-devmode
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: github-triggers
+      interceptors:
+        - cel:
+            filter: "body.ref.split(\"/\")[2] == \"master\""
+            overlays:
+              - key: "commitId"
+                expression: "body.after.truncate(7)"
+        - github:
+            secretRef:
+              secretName: github-secret
+              secretKey: secretToken
+            eventTypes:
+              - push
+      bindings:
+        - ref: quarkus-devmode-tb
+      template:
+        ref: quarkus-devmode-tt
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    eventlistener:  quarkus-devmode-el
+    app: quarkus-devmode
+  name: quarkus-devmode-el-route
+spec:
+  port:
+    targetPort: http-listener
+  to:
+    kind: Service
+    name: el-quarkus-devmode-el
